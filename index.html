@@ -1,0 +1,801 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>Vocab Drill | Proctored Assessment</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: #0a0c15;
+            font-family: 'Inter', 'Segoe UI', system-ui, -apple-system, sans-serif;
+            color: #e2e8f0;
+            padding: 20px;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            background: #11131f;
+            border-radius: 32px;
+            padding: 24px 28px;
+            border: 1px solid #252a41;
+            box-shadow: 0 20px 35px -10px rgba(0,0,0,0.6);
+        }
+
+        h1, h2, h3 {
+            font-weight: 600;
+            letter-spacing: -0.3px;
+        }
+
+        .gradient-text {
+            background: linear-gradient(135deg, #a78bfa, #38bdf8);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            font-size: 2rem;
+        }
+
+        .timer-panel {
+            background: #0b0d16;
+            padding: 12px 24px;
+            border-radius: 60px;
+            display: inline-flex;
+            align-items: baseline;
+            gap: 16px;
+            margin-bottom: 24px;
+            border-left: 5px solid #facc15;
+            font-weight: 600;
+        }
+
+        .timer {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 2rem;
+            font-weight: 700;
+            color: #facc15;
+            background: #00000030;
+            padding: 0 12px;
+            border-radius: 40px;
+        }
+
+        .card {
+            background: #151b2b;
+            border-radius: 28px;
+            padding: 24px;
+            margin-bottom: 28px;
+            border: 1px solid #2d3450;
+        }
+
+        label {
+            font-weight: 500;
+            display: block;
+            margin-top: 14px;
+            margin-bottom: 6px;
+            color: #b9c3e0;
+        }
+
+        input, select {
+            background: #0a0e1a;
+            border: 1px solid #2f3a5c;
+            padding: 12px 16px;
+            border-radius: 20px;
+            width: 100%;
+            color: #f1f5f9;
+            font-size: 1rem;
+        }
+
+        input:focus, select:focus {
+            outline: none;
+            border-color: #818cf8;
+            box-shadow: 0 0 0 2px rgba(129,140,248,0.3);
+        }
+
+        button {
+            background: #2d3a5e;
+            border: none;
+            padding: 12px 28px;
+            border-radius: 40px;
+            font-weight: 600;
+            color: white;
+            cursor: pointer;
+            transition: 0.2s;
+            margin-top: 20px;
+            margin-right: 12px;
+        }
+
+        button.primary {
+            background: #4f46e5;
+            box-shadow: 0 4px 14px rgba(79,70,229,0.4);
+        }
+
+        button.primary:hover {
+            background: #6366f1;
+            transform: scale(0.98);
+        }
+
+        button.danger {
+            background: #dc2626;
+        }
+
+        .vocab-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            gap: 12px;
+            max-height: 500px;
+            overflow-y: auto;
+            padding-right: 8px;
+        }
+
+        .vocab-item {
+            background: #1a1f33;
+            padding: 12px 16px;
+            border-radius: 20px;
+            border-left: 4px solid #818cf8;
+        }
+
+        .vocab-word {
+            font-weight: 700;
+            font-size: 1.1rem;
+            color: #facc15;
+        }
+
+        .question-card {
+            background: #13182a;
+            padding: 18px;
+            border-radius: 24px;
+            margin-bottom: 16px;
+            border: 1px solid #293054;
+        }
+
+        .question-text {
+            font-weight: 600;
+            margin-bottom: 12px;
+            font-size: 1rem;
+        }
+
+        .options {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            margin-top: 8px;
+        }
+
+        .option label {
+            margin: 0;
+            font-weight: normal;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            cursor: pointer;
+        }
+
+        .wordbank-box {
+            background: #0c1020;
+            padding: 18px;
+            border-radius: 24px;
+            margin: 20px 0;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            border: 1px solid #2d3a66;
+        }
+
+        .wordbank-word {
+            background: #1e2a4a;
+            padding: 6px 18px;
+            border-radius: 40px;
+            font-weight: 600;
+            font-family: monospace;
+            font-size: 0.9rem;
+        }
+
+        .popup {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.95);
+            backdrop-filter: blur(8px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 2000;
+        }
+
+        .popup-card {
+            background: #1a1f2e;
+            max-width: 800px;
+            width: 90%;
+            max-height: 85vh;
+            overflow-y: auto;
+            padding: 28px;
+            border-radius: 36px;
+            box-shadow: 0 25px 40px black;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        .answer-summary {
+            background: #0e1222;
+            padding: 16px;
+            border-radius: 24px;
+            font-family: monospace;
+            font-size: 0.8rem;
+            max-height: 500px;
+            overflow-y: auto;
+        }
+
+        @media print {
+            body {
+                background: white;
+                padding: 0;
+                margin: 0;
+            }
+            .no-print, .timer-panel, button, .popup, #summaryPopup {
+                display: none !important;
+            }
+            .print-pattern {
+                background: repeating-linear-gradient(45deg, #f0f2f5 0px, #f0f2f5 3px, #ffffff 3px, #ffffff 15px);
+                padding: 20px;
+            }
+            .container {
+                background: white;
+                color: black;
+                box-shadow: none;
+            }
+            .answer-summary {
+                background: #f8f9fc;
+                border: 1px solid #ccc;
+                color: black;
+            }
+        }
+
+        footer {
+            font-size: 0.7rem;
+            text-align: center;
+            margin-top: 25px;
+            color: #5a668a;
+        }
+        hr {
+            border-color: #2a3250;
+        }
+        .section-title {
+            margin: 20px 0 15px 0;
+            padding-bottom: 8px;
+            border-bottom: 2px solid #4f46e5;
+            display: inline-block;
+        }
+    </style>
+</head>
+<body>
+<div class="container" id="appRoot">
+    <!-- LOGIN PAGE -->
+    <div id="loginPage">
+        <div class="card" style="max-width: 550px; margin: 40px auto;">
+            <h1 class="gradient-text">📘 VOCAB DRILL</h1>
+            <p style="margin: 8px 0 20px 0;">Proctored vocabulary assessment system</p>
+            <label>Student Name</label>
+            <input type="text" id="studentName" placeholder="e.g., Ahmad Fauzi">
+            <label>Student ID</label>
+            <input type="text" id="studentId" placeholder="e.g., 22051234">
+            <label>Study Program</label>
+            <input type="text" id="studyProgram" placeholder="e.g., English Literature">
+            <label>Select Day</label>
+            <select id="daySelect">
+                <option value="day1">Day 1 (Vocabulary 1-100)</option>
+                <option value="day2">Day 2 (Vocabulary 101-200)</option>
+                <option value="day3">Day 3 (Vocabulary 201-300)</option>
+            </select>
+            <button class="primary" id="startBtn" style="width: 100%; margin-top: 28px;">▶ Begin Session</button>
+        </div>
+    </div>
+
+    <!-- VOCAB LIST PAGE (5 min timer) -->
+    <div id="vocabListPage" class="hidden">
+        <div class="timer-panel no-print">
+            <span>📖 Review mode:</span>
+            <span class="timer" id="listTimer">05:00</span>
+            <span>time left</span>
+        </div>
+        <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap;">
+            <h2>📚 Vocabulary List: <span id="listDayLabel"></span></h2>
+            <button id="proceedToDrillBtn" class="primary">➡ Proceed to Drill</button>
+        </div>
+        <div class="vocab-grid" id="vocabListContainer"></div>
+    </div>
+
+    <!-- DRILL PAGE (25 min timer) -->
+    <div id="drillPage" class="hidden">
+        <div class="timer-panel no-print">
+            <span>✍️ Drill in progress:</span>
+            <span class="timer" id="drillTimer">25:00</span>
+            <span>auto-submit at 0</span>
+        </div>
+        <div id="drillQuestionsContainer"></div>
+        <div style="margin: 20px 0;">
+            <button id="submitDrillBtn" class="primary">✅ Submit Exam & Show Summary</button>
+        </div>
+    </div>
+
+    <!-- SUMMARY + PRINT POPUP -->
+    <div id="summaryPopup" class="popup hidden">
+        <div class="popup-card">
+            <h3>📄 Submission Summary</h3>
+            <div id="summaryContent" class="answer-summary"></div>
+            <div style="margin-top: 20px; display: flex; gap: 12px; flex-wrap: wrap;">
+                <button id="closeSummaryBtn" class="danger">Close</button>
+                <button id="printSummaryBtn" class="primary">🖨️ Print / Save as PDF</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    // ======================= FULL VOCAB DATABASE (from file) =======================
+    const fullVocab = [];
+
+    function pushEntries(arr) {
+        for (let i = 0; i < arr.length; i += 3) {
+            fullVocab.push({ word: arr[i], eng: arr[i+1], ind: arr[i+2] });
+        }
+    }
+
+    // DAY 1 (1-100)
+    const day1Raw = ["a couple of","two or a few","beberapa","a number of","several","sejumlah","a sheet of","one piece of paper, etc.","selembar","a wide range of","many different types","berbagai macam","abandon","to leave permanently","meninggalkan","abase","to lower in rank or dignity","merendahkan","abate","to become less intense","mereda","abbess","head of a convent of nuns","kepala biara perempuan","abbey","building where monks/nuns live","biara","abbot","head of a monastery","kepala biara laki-laki","abbreviate","to shorten a word/phrase","menyingkat","abdicate","to give up a throne or power","turun tahta","abdomen","stomach area","perut, rongga perut","abdominal","related to the abdomen","abdominal, perut","abduction","taking away by force","penculikan","abed","in bed","di tempat tidur","aberration","departure from normal","penyimpangan","abet","to encourage/support wrongdoing","menghasut","abeyance","temporary suspension","penundaan sementara","abhor","to hate intensely","membenci sekali","abhorrence","intense hatred","kebencian mendalam","abhorrent","causing disgust","menjijikkan","abidance","compliance with rules","kepatuhan","abide","to tolerate or accept","mematuhi, bertahan","ability","skill or talent","kemampuan","abject","extremely hopeless","hina, melarat","abjure","to renounce under oath","melepaskan sumpah","ablation","removal, cutting off","pengangkatan, amputasi","able-bodied","physically strong","kuat fisik","abnegate","to renounce rights","melepaskan hak","abnormal","not normal","tidak normal","abolish","to officially end","menghapuskan","abominable","very bad or unpleasant","mengerikan","abominate","to loathe intensely","sangat membenci","abomination","something hateful","kekejian","aboriginal","original inhabitants","asli, penduduk asli","aborigines","native people","penduduk asli","abound","to exist in large numbers","berlimpah","aboveboard","honest, open","jujur, terbuka","abrade","to scrape off","mengikis","abrasion","scraped area","lecet, gesekan","abreast","side by side","berdampingan","abridge","to shorten text","meringkas","abridgment","shortened version","ringkasan","abrogate","to repeal or cancel","membatalkan","abrupt","sudden, unexpected","tiba-tiba","abscess","swollen infected area","abses, bisul","abscission","cutting off","pemotongan","abscond","to leave secretly","melarikan diri","absence","being away","ketidakhadiran","absent-minded","forgetful","pelupa","absolute","total, complete","mutlak","absolutely","completely","sama sekali","absolution","forgiveness of sins","pengampunan dosa","absolve","to free from blame","membebaskan","absorb","to take in","menyerap","absorption","process of absorbing","penyerapan","abstain","to refrain from","menghindari","abstemious","moderate in eating/drinking","hemat, sederhana","abstinence","refraining from something","pantangan","abstract","theoretical, not concrete","abstrak","abstruse","difficult to understand","sulit dipahami","absurd","ridiculous","tidak masuk akal","abundance","large quantity","kelimpahan","abuse","misuse or cruel treatment","penyalahgunaan","abusive","insulting, harmful","kasar, menghina","abut","to border on","berbatasan","abyss","deep hole","jurang","academic","scholarly","akademis","academician","academy member","akademisi","academy","school or institution","akademi","accede","to agree to","menyetujui","accelerate","to speed up","mempercepat","accept","to receive willingly","menerima","acceptable","satisfactory","dapat diterima","access","entry, permission","akses","access to","ability to enter","akses ke","accessible","easy to enter","mudah diakses","accession","attainment of rank","pengangkatan","accessory","extra item; accomplice","aksesori","accidental","unplanned","tidak sengaja","accidentally","by chance","secara tidak sengaja","acclaim","public praise","pujian","accommodate","to provide space","menampung","accompaniment","something that accompanies","iringan","accompanist","musician who accompanies","pengiring","accompany","to go with","menemani","accomplice","partner in crime","kaki tangan","accomplish","to achieve","mencapai","accomplished","skilled","mahir","accord","agreement","kesepakatan","according to","as stated by","menurut","accordingly","therefore","oleh karena itu","accordion","musical instrument","akordeon","accost","to approach boldly","menegur","account","report; bank account","rekening, laporan","accountable","responsible","bertanggung jawab","accounting","recording finances","akuntansi","accouter","to equip","memperlengkapi","accredit","to certify","mengakreditasi"];
+    pushEntries(day1Raw);
+    
+    // DAY 2 (101-200)
+    const day2Raw = ["accretion","gradual growth","pertumbuhan","accumulate","to build up","mengumpulkan","accuracy","correctness","keakuratan","accurate","correct","akurat","accurately","correctly","secara akurat","accursed","under a curse","terkutuk","accusation","charge of wrongdoing","tuduhan","accusatory","blaming","menuduh","accuse","to blame","menuduh","accustom","to make familiar","membiasakan","accustomed","usual; familiar","terbiasa","acerbity","bitterness","kepahitan","acetate","chemical compound","asetat","acetic","vinegar-like","asetat (cuka)","ache","continuous pain","sakit","achieve","to accomplish","mencapai","achievement","accomplishment","prestasi","Achillean","invulnerable","tak terkalahkan","achromatic","colorless","tanpa warna","acid","sour substance","asam","acidify","to make acidic","mengasamkan","acknowledge","to admit or recognize","mengakui","acknowledgment","recognition","pengakuan","acme","highest point","puncak","acoustic","related to sound","akustik","acquaint","to make familiar","mengenalkan","acquaintance","person known","kenalan","acquiesce","to accept reluctantly","menurut","acquiescence","reluctant acceptance","persetujuan pasif","acquire","to obtain","memperoleh","acquisition","something obtained","perolehan","acquit","to declare not guilty","membebaskan","acquittal","judgment of not guilty","pembebasan","acreage","land area","luas tanah","acrid","sharp/biting smell/taste","tajam (bau/rasa)","acrimonious","bitter in manner","penuh kebencian","acrimony","bitterness","kekasaran","act","action; law","bertindak, undang-undang","actionable","grounds for lawsuit","dapat dituntut","active","energetic","aktif","actual","real","sebenarnya","actuality","reality","kenyataan","actually","in fact","sebenarnya","actuary","insurance statistician","aktuaris","actuate","to motivate","menggerakkan","acumen","sharp judgment","ketajaman pikiran","acute","severe; sharp","akut","adamant","unyielding","teguh","adapt","to adjust","menyesuaikan diri","addendum","something added","tambahan","addition","adding; extra item","tambahan","additional","extra","tambahan","addle","to confuse","membingungkan","address","speech; location","alamat, pidato","adduce","to give as proof","mengemukakan","adequate","sufficient","cukup","adequately","sufficiently","secara cukup","adhere","to stick to","melekat","adherence","attachment","kepatuhan","adherent","follower","pengikut","adhesion","sticking","perekatan","adieu","goodbye","selamat tinggal","adjacency","being next to","kedekatan","adjacent","next to","berdekatan","adjourn","to suspend meeting","menunda","adjudge","to decide formally","memutuskan","adjunct","auxiliary thing","tambahan","adjuration","solemn appeal","permohonan","adjust","to modify","menyesuaikan","adjutant","assistant","ajudan","administer","to manage","mengelola","administrator","manager","administrator","admirable","worthy of praise","terpuji","admire","to respect highly","mengagumi","admissible","allowed","dapat diterima","admission","entry; confession","masuk, pengakuan","admittance","permission to enter","izin masuk","admonish","to warn","menegur","admonition","warning","teguran","ado","fuss","keributan","adopt","to take as one's own","mengadopsi","adoration","deep love","pemujaan","adore","to love deeply","memuja","adorn","to decorate","menghias","adroit","skillful","cekatan","adulterant","substance that adulterates","bahan campuran","adulterate","to make impure","memalsukan","adumbrate","to outline","menguraikan","advance","move forward","kemajuan","advanced","highly developed","maju","advantage","benefit","keuntungan","advent","arrival","kedatangan","adventure","exciting experience","petualangan","adversary","opponent","lawan","adverse","unfavorable","merugikan","adversity","hardship","kesulitan","advert","to refer","mengacu","advertise","to promote","mengiklankan","advertisement","public notice","iklan","advertiser","person who advertises","pengiklan"];
+    pushEntries(day2Raw);
+    
+    // DAY 3 (201-300)
+    const day3Raw = ["advice","recommendation","nasihat","advisable","recommended","disarankan","advise","to recommend","menasihati","advise A of B","to inform A about B","memberi tahu","advisor","consultant","penasihat","advisory","giving advice","penasihat","advocacy","support for cause","dukungan","advocate","to support","menganjurkan","aerial","in the air","udara","aeronaut","balloonist","penerbang balon","aeronautics","flight science","aeronautika","aerostat","airship","aerostat","aerostatics","air pressure study","aerostatika","aesthetic","artistic","estetis","affable","friendly","ramah","affect","to influence","mempengaruhi","affectation","artificial behavior","kepura-puraan","affection","fondness","kasih sayang","affiliate","to join/associate","berafiliasi","affirmative","answering yes","afirmatif","affix","to attach","membubuhkan","affluence","wealth","kekayaan","affluent","wealthy","kaya","afford","to have enough money","mampu","affordability","being affordable","keterjangkauan","affordable","not too expensive","terjangkau","affront","insult","penghinaan","afire","on fire","terbakar","afoot","in progress","berlangsung","aforesaid","previously mentioned","tersebut di atas","afresh","again","kembali lagi","after all","despite everything","bagaimanapun juga","afterthought","later thought","pemikiran kemudian","agency","organization","agensi","agenda","list of items","agenda","agent","representative","agen","agglomerate","to cluster","menggumpal","aggrandize","to increase power","memperkuat","aggravate","to worsen","memperburuk","aggravation","worsening","memperburuk","aggregate","total","keseluruhan","aggress","to attack","menyerang","aggression","hostile behavior","agresi","aggressive","hostile","agresif","aggressively","in hostile manner","secara agresif","aggrieve","to distress","menyedihkan","aghast","shocked","terkejut","agile","quick and light","lincah","agitate","to stir/shake","mengagitasi","agrarian","related to land","agraris","agree","to consent","setuju","agreement","contract","perjanjian","agriculture","farming","pertanian","aid","help","bantuan","aide-de-camp","military assistant","ajudan","ailing","ill","sakit","ailment","illness","penyakit","aim","goal","tujuan","airport","aviation terminal","bandara","airy","light/ethereal","lapang","akin","similar","mirip","alabaster","white stone","pualam","alacrity","eagerness","kegembiraan","alarm","warning","alarm","albeit","although","meskipun","albino","no skin pigment","albino","album","photo/music collection","album","alchemy","medieval chemistry","alkimia","alcohol","beverage","alkohol","alcoholism","addiction to alcohol","alkoholisme","alcove","recess","ceruk","alder","tree type","alder (kayu)","alderman","municipal official","anggota dewan kota","aldermanship","position of alderman","jabatan alderman","alert","watchful","waspada","alias","false name","nama samaran","alien","foreigner; strange","asing","alienable","transferable","dapat dialihkan","alienate","to make hostile","mengasingkan","alienation","estrangement","pengasingan","aliment","nourishment","makanan","alkali","chemical base","alkali","allay","to reduce fear","meredakan","allege","to claim without proof","mengklaim","allegory","symbolic story","alegori","allergic","sensitive to allergen","alergi","alleviate","to relieve","meringankan","alley","narrow street","gang","alliance","union of groups","aliansi","allocate","to assign","mengalokasikan","allot","to assign shares","membagikan","allotment","share allocation","jatah","allow","to permit","mengizinkan","allude","to hint","mengacu","allusion","indirect reference","kiasan","alluvion","flood","banjir","ally","partner","sekutu","almanac","annual calendar","almanak","aloof","distant in manner","angkuh","altar","religious table","altar"];
+    pushEntries(day3Raw);
+
+    function getVocabByDay(day) {
+        if (day === 'day1') return fullVocab.slice(0, 100);
+        if (day === 'day2') return fullVocab.slice(100, 200);
+        return fullVocab.slice(200, 300);
+    }
+
+    // Pre-built questions based on the original file format (Part A and Part B from the actual practice)
+    // These are extracted directly from your DAY 1, DAY 2, DAY 3 practice sections
+    const practiceQuestions = {
+        day1: {
+            partA: [
+                { text: "The manager is ______ for the team's performance.", options: ["access", "abstract", "accountable", "abrupt"], correct: "accountable" },
+                { text: "Many fish ______ in the river during the rainy season.", options: ["abound", "abuse", "absorb", "access"], correct: "abound" },
+                { text: "The school decided to ______ the outdated rule.", options: ["accept", "abolish", "accelerate", "accord"], correct: "abolish" },
+                { text: "Her ______ to solve problems impressed everyone.", options: ["ability", "absence", "acclaim", "account"], correct: "ability" },
+                { text: "The sponge can ______ a large amount of water.", options: ["absorb", "abuse", "abound", "accept"], correct: "absorb" },
+                { text: "The meeting ended with an ______ change of topic.", options: ["abstract", "accountable", "abrupt", "academic"], correct: "abrupt" },
+                { text: "Students need library ______ to complete the project.", options: ["accident", "access", "accord", "acclaim"], correct: "access" },
+                { text: "The teacher discussed an ______ concept in philosophy.", options: ["abstract", "abrupt", "acceptable", "accidental"], correct: "abstract" },
+                { text: "The company hopes to ______ production next year.", options: ["accommodate", "accept", "accelerate", "account"], correct: "accelerate" },
+                { text: "Repeated verbal ______ can harm a child's confidence.", options: ["abuse", "abundance", "absence", "acclaim"], correct: "abuse" },
+                { text: "His long ______ from class affected his grades.", options: ["account", "absence", "accord", "access"], correct: "absence" },
+                { text: "The paper was written in an ______ style.", options: ["academic", "abrupt", "aboard", "accidental"], correct: "academic" },
+                { text: "The university agreed to ______ her application.", options: ["abound", "accelerate", "accept", "absorb"], correct: "accept" },
+                { text: "The hotel can ______ up to 300 guests.", options: ["acclaim", "accommodate", "account", "accompany"], correct: "accommodate" },
+                { text: "The singer received public ______ after the concert.", options: ["accord", "accounting", "acclaim", "accredit"], correct: "acclaim" },
+                { text: "She will ______ her friend to the ceremony.", options: ["accompany", "accomplish", "accord", "absorb"], correct: "accompany" },
+                { text: "The result was considered ______ by the committee.", options: ["abrupt", "accidental", "acceptable", "abstract"], correct: "acceptable" },
+                { text: "The success of the project was a major ______.", options: ["account", "accomplishment", "access", "absence"], correct: "accomplishment" },
+                { text: "The institution was officially ______ by the agency.", options: ["accelerated", "accounted", "accredited", "accompanied"], correct: "accredited" },
+                { text: "The two countries reached an ______ after negotiations.", options: ["accord", "account", "acclaim", "academy"], correct: "accord" },
+                { text: "She is highly ______ in several languages.", options: ["abrupt", "accomplished", "accidental", "accessible"], correct: "accomplished" },
+                { text: "The error was purely ______.", options: ["accidental", "abstract", "acceptable", "accountable"], correct: "accidental" },
+                { text: "Please open a bank ______ before depositing money.", options: ["accord", "account", "acclaim", "access"], correct: "account" },
+                { text: "The company follows strict ______ procedures.", options: ["accounting", "academic", "access", "acclaim"], correct: "accounting" },
+                { text: "The report was delayed; ______, the meeting was postponed.", options: ["account", "accord", "accordingly", "acclaim"], correct: "accordingly" }
+            ],
+            partB: [
+                { text: "Skill or talent", options: ["ability", "access", "abuse", "absence"], correct: "ability" },
+                { text: "To officially end something", options: ["absorb", "abound", "abolish", "accord"], correct: "abolish" },
+                { text: "To exist in large numbers", options: ["acclaim", "abound", "account", "accompany"], correct: "abound" },
+                { text: "Sudden and unexpected", options: ["abrupt", "abstract", "acceptable", "accidental"], correct: "abrupt" },
+                { text: "Being away", options: ["account", "absence", "accord", "academy"], correct: "absence" },
+                { text: "To take in", options: ["absorb", "accelerate", "access", "accredit"], correct: "absorb" },
+                { text: "Theoretical, not concrete", options: ["abuse", "abundance", "abstract", "acclaim"], correct: "abstract" },
+                { text: "Misuse or cruel treatment", options: ["abuse", "access", "account", "academy"], correct: "abuse" },
+                { text: "Scholarly; related to education", options: ["accomplished", "academic", "acceptable", "accidental"], correct: "academic" },
+                { text: "To speed up", options: ["accept", "accompany", "accelerate", "accord"], correct: "accelerate" },
+                { text: "Entry or permission to enter", options: ["acclaim", "access", "account", "absence"], correct: "access" },
+                { text: "Public praise", options: ["acclaim", "accord", "abundance", "accessory"], correct: "acclaim" },
+                { text: "To provide space for", options: ["accomplish", "accompany", "accommodate", "accredit"], correct: "accommodate" },
+                { text: "To achieve successfully", options: ["account", "accomplish", "accord", "absorb"], correct: "accomplish" },
+                { text: "Agreement", options: ["access", "account", "accord", "acclaim"], correct: "accord" }
+            ],
+            wordBank: ["Academy", "Abide", "Aboard", "Absolute", "Acceptable", "Accessory", "Academician", "Accident", "Account", "Accounting", "Abridge", "Abundance", "Accessible", "Accomplish", "Accredit"]
+        },
+        day2: {
+            partA: [
+                { text: "The scientist worked hard to ______ a breakthrough in cancer research.", options: ["acquire", "achieve", "adhere", "advertise"], correct: "achieve" },
+                { text: "The company needs to ______ its strategy to changing market conditions.", options: ["adapt", "admire", "accuse", "adjoin"], correct: "adapt" },
+                { text: "Please ______ your name and contact information on the form.", options: ["adduce", "advance", "address", "acquire"], correct: "address" },
+                { text: "The manager gave an ______ explanation for the delay.", options: ["actual", "active", "acute", "accurate"], correct: "accurate" },
+                { text: "Students must ______ to the school rules at all times.", options: ["adopt", "admire", "adhere", "achieve"], correct: "adhere" },
+                { text: "The company plans to ______ its new product on social media.", options: ["advertise", "acquire", "adjust", "admit"], correct: "advertise" },
+                { text: "The museum recently ______ a rare painting from a private collector.", options: ["achieved", "acquired", "adapted", "advertised"], correct: "acquired" },
+                { text: "Regular exercise is important for maintaining an ______ lifestyle.", options: ["actual", "active", "acute", "adverse"], correct: "active" },
+                { text: "The team celebrated its greatest ______ after winning the championship.", options: ["acquisition", "addition", "achievement", "admission"], correct: "achievement" },
+                { text: "The report was based on ______ data rather than assumptions.", options: ["active", "actual", "acute", "admirable"], correct: "actual" },
+                { text: "Her kindness made everyone ______ her.", options: ["accuse", "adapt", "admire", "adduce"], correct: "admire" },
+                { text: "The new library is a valuable ______ to the school.", options: ["addition", "acquisition", "admission", "address"], correct: "addition" },
+                { text: "The hikers enjoyed an exciting ______ through the mountains.", options: ["adversity", "advertisement", "adventure", "advance"], correct: "adventure" },
+                { text: "The company faced an ______ economic situation during the recession.", options: ["active", "adverse", "actual", "acute"], correct: "adverse" },
+                { text: "The charity's goal is to ______ opportunities for disadvantaged children.", options: ["advance", "accuse", "adjourn", "adopt"], correct: "advance" },
+                { text: "The judge decided to ______ the defendant due to lack of evidence.", options: ["accuse", "acquire", "acquit", "actuate"], correct: "acquit" },
+                { text: "The school granted ______ to all qualified applicants.", options: ["addition", "admission", "adherence", "adjacency"], correct: "admission" },
+                { text: "The lawyer tried to ______ evidence to support the claim.", options: ["adduce", "admire", "adopt", "achieve"], correct: "adduce" },
+                { text: "The project was completed because of ______ planning and teamwork.", options: ["accurate", "adverse", "adequate", "acrid"], correct: "adequate" },
+                { text: "The meeting was ______ until next Monday.", options: ["adjusted", "adjourned", "advanced", "acquired"], correct: "adjourned" },
+                { text: "The government encouraged families to ______ children in need.", options: ["accuse", "adopt", "adjoin", "admire"], correct: "adopt" },
+                { text: "The speaker will ______ the audience at the opening ceremony.", options: ["address", "acquire", "advertise", "adjust"], correct: "address" },
+                { text: "The factory must make an ______ to the safety procedures.", options: ["accusation", "addition", "acquisition", "actuality"], correct: "addition" },
+                { text: "The soldiers showed ______ courage during the battle.", options: ["actual", "active", "acute", "admirable"], correct: "admirable" },
+                { text: "The company experienced rapid ______ in sales this year.", options: ["accretion", "adversity", "adjacency", "adoration"], correct: "accretion" }
+            ],
+            partB: [
+                { text: "To obtain something", options: ["acquire", "accuse", "adapt", "admire"], correct: "acquire" },
+                { text: "Correctness", options: ["actuality", "accuracy", "acumen", "addition"], correct: "accuracy" },
+                { text: "A public notice promoting a product or service", options: ["advertiser", "advertisement", "adventure", "addition"], correct: "advertisement" },
+                { text: "Hardship or difficulty", options: ["adversary", "adverse", "adversity", "acerbity"], correct: "adversity" },
+                { text: "To adjust to new conditions", options: ["adapt", "acquire", "actuate", "adduce"], correct: "adapt" },
+                { text: "Recognition or admission of something", options: ["acquisition", "acknowledgment", "addition", "admission"], correct: "acknowledgment" },
+                { text: "Benefit or favorable position", options: ["advantage", "advance", "actuality", "adherence"], correct: "advantage" },
+                { text: "A person who manages an organization", options: ["admirer", "advertiser", "administrator", "adjutant"], correct: "administrator" },
+                { text: "To move forward or make progress", options: ["achieve", "advance", "acquire", "adapt"], correct: "advance" },
+                { text: "An opponent or enemy", options: ["adversity", "adversary", "adverse", "adjunct"], correct: "adversary" },
+                { text: "Allowed or permitted", options: ["admirable", "admissible", "admission", "addendum"], correct: "admissible" },
+                { text: "Energetic and engaged", options: ["actual", "active", "acute", "accurate"], correct: "active" },
+                { text: "To love deeply", options: ["adorn", "adore", "admire", "adopt"], correct: "adore" },
+                { text: "To make familiar with something", options: ["acquaint", "acquire", "accuse", "acquit"], correct: "acquaint" },
+                { text: "The highest point or peak", options: ["acute", "acumen", "acme", "accretion"], correct: "acme" }
+            ],
+            wordBank: ["acquire", "achievement", "adapt", "adequate", "admission", "advantage", "actual", "administrator", "adventure", "advertise", "adversity", "admire", "addition", "advance", "accuracy"]
+        },
+        day3: {
+            partA: [
+                { text: "The teacher gave me useful ______ about preparing for the exam.", options: ["advocacy", "advice", "agenda", "aggression"], correct: "advice" },
+                { text: "Parents often ______ their children to study hard.", options: ["advise", "agitate", "allege", "allocate"], correct: "advise" },
+                { text: "The organization works to ______ for environmental protection.", options: ["afford", "advocate", "alarm", "allude"], correct: "advocate" },
+                { text: "The speaker's friendly and ______ personality made everyone comfortable.", options: ["affluent", "aerial", "affable", "aloof"], correct: "affable" },
+                { text: "The new policy will ______ how companies manage their data.", options: ["affect", "afford", "aid", "affix"], correct: "affect" },
+                { text: "The company decided to ______ with an international organization.", options: ["affiliate", "agitate", "allay", "alienate"], correct: "affiliate" },
+                { text: "After years of hard work, she became quite ______.", options: ["agile", "affluent", "akin", "aerial"], correct: "affluent" },
+                { text: "Many students cannot ______ the cost of studying abroad.", options: ["agree", "allocate", "afford", "allege"], correct: "afford" },
+                { text: "The project is already ______ and should be completed soon.", options: ["afresh", "afoot", "aloof", "aggrieved"], correct: "afoot" },
+                { text: "The committee prepared an ______ for next week's meeting.", options: ["agenda", "agency", "agreement", "album"], correct: "agenda" },
+                { text: "The manager tried to ______ the concerns of the employees.", options: ["allay", "affix", "aggravate", "agitate"], correct: "allay" },
+                { text: "Several countries formed an ______ to improve regional security.", options: ["allotment", "alliance", "allegation", "album"], correct: "alliance" },
+                { text: "The government decided to ______ more funding to education.", options: ["allocate", "agglomerate", "afford", "affix"], correct: "allocate" },
+                { text: "Employees must ______ with the new workplace rules.", options: ["aid", "allege", "agree", "agitate"], correct: "agree" },
+                { text: "The charity provided food and medical ______ after the disaster.", options: ["agency", "aid", "agenda", "alibi"], correct: "aid" },
+                { text: "The sudden noise caused ______ among the audience.", options: ["alarm", "affection", "alacrity", "allusion"], correct: "alarm" },
+                { text: "The witness refused to ______ anyone without evidence.", options: ["allocate", "advocate", "allege", "advise"], correct: "allege" },
+                { text: "The medicine helped ______ the patient's pain.", options: ["aggravate", "alleviate", "agitate", "alienate"], correct: "alleviate" },
+                { text: "The two ideas are closely ______ in meaning.", options: ["akin", "affluent", "aloof", "aerial"], correct: "akin" },
+                { text: "The company decided to ______ additional staff to the project.", options: ["allude", "agitate", "allocate", "alarm"], correct: "allocate" },
+                { text: "The manager spoke with ______ and completed the task quickly.", options: ["aggression", "alacrity", "adversity", "acumen"], correct: "alacrity" },
+                { text: "The judge listened carefully to the ______ made by both lawyers.", options: ["allegations", "alliances", "albums", "allotments"], correct: "allegations" },
+                { text: "Please ______ your signature to the document.", options: ["affix", "afford", "alienate", "agitate"], correct: "affix" },
+                { text: "The new manager tried not to ______ the employees with harsh decisions.", options: ["aggravate", "affiliate", "advise", "agree"], correct: "aggravate" },
+                { text: "The teacher made an ______ to a famous novel during the lesson.", options: ["allotment", "alliance", "allusion", "almanac"], correct: "allusion" }
+            ],
+            partB: [
+                { text: "Recommendation", options: ["agenda", "affection", "advice", "agency"], correct: "advice" },
+                { text: "Friendly", options: ["affable", "affluent", "agile", "akin"], correct: "affable" },
+                { text: "To influence", options: ["agitate", "affect", "aid", "allocate"], correct: "affect" },
+                { text: "Wealthy", options: ["affluent", "aerial", "affine", "agile"], correct: "affluent" },
+                { text: "Help", options: ["agenda", "agency", "aid", "alarm"], correct: "aid" },
+                { text: "Organization", options: ["agency", "agreement", "agenda", "alliance"], correct: "agency" },
+                { text: "List of items to be discussed", options: ["affection", "agency", "agenda", "ally"], correct: "agenda" },
+                { text: "To worsen", options: ["aggravate", "agitate", "alleviate", "allocate"], correct: "aggravate" },
+                { text: "Quick and light in movement", options: ["akin", "affluent", "agile", "aerial"], correct: "agile" },
+                { text: "To consent", options: ["agree", "afford", "advise", "affiliate"], correct: "agree" },
+                { text: "Contract or formal arrangement", options: ["agency", "agreement", "agenda", "ally"], correct: "agreement" },
+                { text: "To reduce fear or concern", options: ["alarm", "allude", "allay", "agitate"], correct: "allay" },
+                { text: "To claim without proof", options: ["allege", "allocate", "alleviate", "afford"], correct: "allege" },
+                { text: "Union of groups", options: ["ally", "alliance", "agency", "agenda"], correct: "alliance" },
+                { text: "To assign", options: ["allude", "agitate", "allocate", "alarm"], correct: "allocate" }
+            ],
+            wordBank: ["advice", "advocate", "affect", "affiliate", "affluent", "afford", "agenda", "aid", "alarm", "alleviate", "agile", "agreement", "alliance", "allusion", "allocate"]
+        }
+    };
+
+    // Global state
+    let currentDay = 'day1';
+    let student = { name: '', id: '', program: '' };
+    let listTimerInterval = null, drillTimerInterval = null;
+    let listTime = 300;
+    let drillTime = 1500;
+    let drillActive = false;
+    let submitted = false;
+    let tabViolations = 0;
+    let selectedAnswers = {};
+
+    const loginDiv = document.getElementById('loginPage');
+    const listDiv = document.getElementById('vocabListPage');
+    const drillDiv = document.getElementById('drillPage');
+    const summaryPopup = document.getElementById('summaryPopup');
+
+    function clearAllTimers() {
+        if (listTimerInterval) clearInterval(listTimerInterval);
+        if (drillTimerInterval) clearInterval(drillTimerInterval);
+    }
+
+    // Anti-cheat system
+    function initAntiCheat() {
+        window.addEventListener('blur', () => { if (drillActive && !submitted) handleViolation(); });
+        document.addEventListener('visibilitychange', () => { if (document.hidden && drillActive && !submitted) handleViolation(); });
+        document.addEventListener('contextmenu', e => e.preventDefault());
+        document.addEventListener('keydown', (e) => {
+            if (drillActive && !submitted && (e.key === 'PrintScreen' || (e.ctrlKey && (e.key === 'p' || e.key === 's')))) {
+                e.preventDefault();
+                alert("⚠️ Screenshot/print actions are disabled during the drill.");
+            }
+        });
+        // Disable split screen detection via resize (warning only)
+        let resizeCount = 0;
+        window.addEventListener('resize', () => {
+            if (drillActive && !submitted && window.innerWidth < 800) {
+                resizeCount++;
+                if (resizeCount === 1) alert("⚠️ Please maintain full window for the exam.");
+                else if (resizeCount >= 2) handleViolation();
+            }
+        });
+    }
+
+    function handleViolation() {
+        tabViolations++;
+        if (tabViolations === 1) alert("⚠️ WARNING: Leaving the drill page is prohibited. Next violation will auto-submit.");
+        else if (tabViolations >= 2) {
+            alert("❌ FORCE SUBMISSION: You violated the policy. Test is auto-submitted.");
+            forceSubmitDrill();
+        }
+    }
+
+    function forceSubmitDrill() {
+        if (submitted) return;
+        if (drillTimerInterval) clearInterval(drillTimerInterval);
+        submitted = true;
+        drillActive = false;
+        gatherAndShowSummary();
+    }
+
+    document.getElementById('startBtn').addEventListener('click', () => {
+        const name = document.getElementById('studentName').value.trim();
+        const id = document.getElementById('studentId').value.trim();
+        const prog = document.getElementById('studyProgram').value.trim();
+        if (!name || !id || !prog) { alert("Please fill all fields."); return; }
+        student = { name, id, program: prog };
+        currentDay = document.getElementById('daySelect').value;
+        loginDiv.classList.add('hidden');
+        listDiv.classList.remove('hidden');
+        renderVocabList();
+        startListTimer();
+    });
+
+    function renderVocabList() {
+        const vocab = getVocabByDay(currentDay);
+        const container = document.getElementById('vocabListContainer');
+        container.innerHTML = '';
+        document.getElementById('listDayLabel').innerText = currentDay.toUpperCase();
+        vocab.forEach(v => {
+            const div = document.createElement('div'); div.className = 'vocab-item';
+            div.innerHTML = `<div class="vocab-word">${v.word}</div><div>📖 ${v.eng} &nbsp;—&nbsp; 🇮🇩 ${v.ind}</div>`;
+            container.appendChild(div);
+        });
+    }
+
+    function startListTimer() {
+        if (listTimerInterval) clearInterval(listTimerInterval);
+        listTimerInterval = setInterval(() => {
+            if (listTime <= 0) {
+                clearInterval(listTimerInterval);
+                alert("Time for vocabulary review finished! Moving to drill.");
+                proceedToDrill();
+            } else {
+                listTime--;
+                let mins = Math.floor(listTime / 60);
+                let secs = listTime % 60;
+                document.getElementById('listTimer').innerText = `${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
+            }
+        }, 1000);
+    }
+
+    document.getElementById('proceedToDrillBtn').addEventListener('click', () => {
+        if (listTimerInterval) clearInterval(listTimerInterval);
+        proceedToDrill();
+    });
+
+    function shuffleArray(arr) {
+        for (let i = arr.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [arr[i], arr[j]] = [arr[j], arr[i]];
+        }
+        return arr;
+    }
+
+    function proceedToDrill() {
+        listDiv.classList.add('hidden');
+        drillDiv.classList.remove('hidden');
+        buildDrillQuestions();
+        startDrillTimer();
+        drillActive = true;
+        submitted = false;
+        tabViolations = 0;
+    }
+
+    function buildDrillQuestions() {
+        const dayData = practiceQuestions[currentDay];
+        if (!dayData) return;
+        
+        // Shuffle Part A (1-25) and Part B (26-40)
+        const shuffledPartA = shuffleArray([...dayData.partA]);
+        const shuffledPartB = shuffleArray([...dayData.partB]);
+        const wordBankList = shuffleArray([...dayData.wordBank]);
+        
+        const container = document.getElementById('drillQuestionsContainer');
+        container.innerHTML = '';
+        selectedAnswers = {};
+        
+        // Section title
+        const titleA = document.createElement('h3'); titleA.className = 'section-title'; titleA.innerText = 'Part A: Fill in the blanks (Questions 1-25)';
+        container.appendChild(titleA);
+        
+        // Part A: Questions 1-25
+        shuffledPartA.forEach((q, idx) => {
+            const qDiv = document.createElement('div'); qDiv.className = 'question-card';
+            qDiv.innerHTML = `
+                <div class="question-text">${idx + 1}. ${q.text}</div>
+                <div class="options">
+                    ${q.options.map((opt, optIdx) => `<div class="option"><label><input type="radio" name="q_partA_${idx}" value="${opt}"> ${opt}</label></div>`).join('')}
+                </div>`;
+            container.appendChild(qDiv);
+            const radios = qDiv.querySelectorAll('input');
+            radios.forEach(radio => radio.addEventListener('change', (e) => {
+                selectedAnswers[`partA_${idx}`] = e.target.value;
+            }));
+        });
+        
+        // Section title Part B
+        const titleB = document.createElement('h3'); titleB.className = 'section-title'; titleB.innerText = 'Part B: Choose the correct definition (Questions 26-40)';
+        container.appendChild(titleB);
+        
+        // Part B: Questions 26-40
+        shuffledPartB.forEach((q, idx) => {
+            const qDiv = document.createElement('div'); qDiv.className = 'question-card';
+            qDiv.innerHTML = `
+                <div class="question-text">${26 + idx}. ${q.text}</div>
+                <div class="options">
+                    ${q.options.map((opt, optIdx) => `<div class="option"><label><input type="radio" name="q_partB_${idx}" value="${opt}"> ${opt}</label></div>`).join('')}
+                </div>`;
+            container.appendChild(qDiv);
+            const radios = qDiv.querySelectorAll('input');
+            radios.forEach(radio => radio.addEventListener('change', (e) => {
+                selectedAnswers[`partB_${idx}`] = e.target.value;
+            }));
+        });
+        
+        // Word Bank display for Part C
+        const bankDiv = document.createElement('div'); bankDiv.className = 'wordbank-box';
+        bankDiv.innerHTML = `<strong>📦 WORD BANK (For questions 41-50):</strong><br/>` + wordBankList.map(w => `<span class="wordbank-word">${w}</span>`).join('');
+        container.appendChild(bankDiv);
+        
+        // Section title Part C
+        const titleC = document.createElement('h3'); titleC.className = 'section-title'; titleC.innerText = 'Part C: Fill in the blanks using the Word Bank (Questions 41-50)';
+        container.appendChild(titleC);
+        
+        // Part C sentences (universal but students must pick from word bank)
+        const partCSentences = [
+            "Good study habits can help students overcome _________.",
+            "The company wants to _________ more customers online.",
+            "The school principal works as the chief _________.",
+            "We need _________ information before making a decision.",
+            "Her graduation was a major _________.",
+            "The team must _________ quickly to the new regulations.",
+            "The scholarship gave her an _________ over other applicants.",
+            "The climbers went on an exciting _________ in the mountains.",
+            "The university announced that _________ applications are now open.",
+            "Repeated practice improves the _________ of your work."
+        ];
+        
+        // Shuffle the sentences order
+        const shuffledSentences = shuffleArray([...partCSentences]);
+        
+        shuffledSentences.forEach((sentence, idx) => {
+            const fbDiv = document.createElement('div'); fbDiv.className = 'question-card';
+            fbDiv.innerHTML = `
+                <div class="question-text">${41 + idx}. ${sentence}</div>
+                <input type="text" placeholder="Type a word from the Word Bank above" data-fb-idx="${idx}" style="width:100%; background:#0a0e1a; border:1px solid #3a4468; padding:12px; border-radius:16px;">`;
+            const inputField = fbDiv.querySelector('input');
+            inputField.addEventListener('input', (e) => { selectedAnswers[`partC_${idx}`] = e.target.value.trim(); });
+            container.appendChild(fbDiv);
+        });
+    }
+
+    function startDrillTimer() {
+        if (drillTimerInterval) clearInterval(drillTimerInterval);
+        drillTimerInterval = setInterval(() => {
+            if (drillTime <= 0) {
+                clearInterval(drillTimerInterval);
+                if (!submitted) { alert("⏰ Time's up! Auto-submitting."); forceSubmitDrill(); }
+            } else {
+                drillTime--;
+                let mins = Math.floor(drillTime / 60);
+                let secs = drillTime % 60;
+                document.getElementById('drillTimer').innerText = `${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
+            }
+        }, 1000);
+    }
+
+    function gatherAndShowSummary() {
+        if (submitted) return;
+        submitted = true;
+        drillActive = false;
+        if (drillTimerInterval) clearInterval(drillTimerInterval);
+        
+        let summaryHtml = `<div class="print-pattern">
+            <h3>📋 ANSWER SUMMARY — ${student.name} (${student.id})</h3>
+            <p><strong>Program:</strong> ${student.program} | <strong>Day:</strong> ${currentDay.toUpperCase()} | <strong>Submitted:</strong> ${new Date().toLocaleString()}</p>
+            <hr>
+            <h4>Part A (Questions 1-25)</h4>`;
+        
+        for (let i = 0; i < 25; i++) {
+            let ans = selectedAnswers[`partA_${i}`] || "(not answered)";
+            summaryHtml += `<div><strong>Q${i + 1}:</strong> ${ans}</div>`;
+        }
+        
+        summaryHtml += `<hr><h4>Part B (Questions 26-40)</h4>`;
+        for (let i = 0; i < 15; i++) {
+            let ans = selectedAnswers[`partB_${i}`] || "(not answered)";
+            summaryHtml += `<div><strong>Q${26 + i}:</strong> ${ans}</div>`;
+        }
+        
+        summaryHtml += `<hr><h4>Part C (Questions 41-50) — Fill in the blank</h4>`;
+        for (let i = 0; i < 10; i++) {
+            let ans = selectedAnswers[`partC_${i}`] || "(empty)";
+            summaryHtml += `<div><strong>Q${41 + i}:</strong> ${ans}</div>`;
+        }
+        
+        summaryHtml += `<hr><footer style="margin-top:20px;">VOCAB DRILL — Official Assessment Report | Generated from secure testing platform</footer></div>`;
+        document.getElementById('summaryContent').innerHTML = summaryHtml;
+        summaryPopup.classList.remove('hidden');
+    }
+
+    document.getElementById('submitDrillBtn').addEventListener('click', () => {
+        if (submitted) { alert("Already submitted."); return; }
+        gatherAndShowSummary();
+    });
+    document.getElementById('closeSummaryBtn').addEventListener('click', () => summaryPopup.classList.add('hidden'));
+    document.getElementById('printSummaryBtn').addEventListener('click', () => {
+        const printContents = document.getElementById('summaryContent').innerHTML;
+        const win = window.open();
+        win.document.write(`
+            <html><head><title>Vocab Drill Summary - ${student.name}</title>
+            <style>
+                body { font-family: 'Courier New', monospace, sans-serif; padding: 2rem; background: white; }
+                .print-pattern { background: repeating-linear-gradient(45deg, #f4f6fc 0px, #f4f6fc 3px, #fff 3px, #fff 15px); padding: 20px; border-radius: 12px; }
+                h3, h4 { color: #1e293b; }
+                div { margin: 4px 0; }
+            </style>
+            </head><body>${printContents}</body></html>
+        `);
+        win.document.close();
+        win.print();
+    });
+    initAntiCheat();
+</script>
+</body>
+</html>
