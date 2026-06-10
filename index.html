@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-    <title>Vocab Drill | Proctored Assessment</title>
+    <title>Vocab Drill | Week 1 (Days 1-3) | Proctored Assessment</title>
     <style>
         * {
             margin: 0;
@@ -211,8 +211,8 @@
 
         .popup-card {
             background: #1a1f2e;
-            max-width: 800px;
-            width: 90%;
+            max-width: 900px;
+            width: 95%;
             max-height: 85vh;
             overflow-y: auto;
             padding: 28px;
@@ -228,10 +228,25 @@
             background: #0e1222;
             padding: 16px;
             border-radius: 24px;
-            font-family: monospace;
-            font-size: 0.8rem;
+            font-family: 'Segoe UI', system-ui, monospace;
+            font-size: 0.85rem;
             max-height: 500px;
             overflow-y: auto;
+        }
+
+        .summary-question {
+            margin-bottom: 12px;
+            padding-bottom: 8px;
+            border-bottom: 1px solid #2a3250;
+        }
+
+        .summary-question strong {
+            color: #facc15;
+        }
+
+        .summary-answer {
+            margin-left: 20px;
+            color: #a5b4fc;
         }
 
         @media print {
@@ -256,6 +271,12 @@
                 background: #f8f9fc;
                 border: 1px solid #ccc;
                 color: black;
+            }
+            .summary-question strong {
+                color: #1e293b;
+            }
+            .summary-answer {
+                color: #334155;
             }
         }
 
@@ -282,7 +303,7 @@
     <div id="loginPage">
         <div class="card" style="max-width: 550px; margin: 40px auto;">
             <h1 class="gradient-text">📘 VOCAB DRILL</h1>
-            <p style="margin: 8px 0 20px 0;">Proctored vocabulary assessment system</p>
+            <p style="margin: 8px 0 20px 0;">Week 1 - Proctored vocabulary assessment (Days 1, 2, 3)</p>
             <label>Student Name</label>
             <input type="text" id="studentName" placeholder="e.g., Ahmad Fauzi">
             <label>Student ID</label>
@@ -329,7 +350,7 @@
     <!-- SUMMARY + PRINT POPUP -->
     <div id="summaryPopup" class="popup hidden">
         <div class="popup-card">
-            <h3>📄 Submission Summary</h3>
+            <h3>📄 Submission Summary (Questions & Answers)</h3>
             <div id="summaryContent" class="answer-summary"></div>
             <div style="margin-top: 20px; display: flex; gap: 12px; flex-wrap: wrap;">
                 <button id="closeSummaryBtn" class="danger">Close</button>
@@ -340,7 +361,7 @@
 </div>
 
 <script>
-    // ======================= FULL VOCAB DATABASE (from file) =======================
+    // ======================= FULL VOCAB DATABASE (from file - Week 1) =======================
     const fullVocab = [];
 
     function pushEntries(arr) {
@@ -349,7 +370,7 @@
         }
     }
 
-    // DAY 1 (1-100)
+    // DAY 1 (1-100) - vocabulary only for display, practice questions are separate
     const day1Raw = ["a couple of","two or a few","beberapa","a number of","several","sejumlah","a sheet of","one piece of paper, etc.","selembar","a wide range of","many different types","berbagai macam","abandon","to leave permanently","meninggalkan","abase","to lower in rank or dignity","merendahkan","abate","to become less intense","mereda","abbess","head of a convent of nuns","kepala biara perempuan","abbey","building where monks/nuns live","biara","abbot","head of a monastery","kepala biara laki-laki","abbreviate","to shorten a word/phrase","menyingkat","abdicate","to give up a throne or power","turun tahta","abdomen","stomach area","perut, rongga perut","abdominal","related to the abdomen","abdominal, perut","abduction","taking away by force","penculikan","abed","in bed","di tempat tidur","aberration","departure from normal","penyimpangan","abet","to encourage/support wrongdoing","menghasut","abeyance","temporary suspension","penundaan sementara","abhor","to hate intensely","membenci sekali","abhorrence","intense hatred","kebencian mendalam","abhorrent","causing disgust","menjijikkan","abidance","compliance with rules","kepatuhan","abide","to tolerate or accept","mematuhi, bertahan","ability","skill or talent","kemampuan","abject","extremely hopeless","hina, melarat","abjure","to renounce under oath","melepaskan sumpah","ablation","removal, cutting off","pengangkatan, amputasi","able-bodied","physically strong","kuat fisik","abnegate","to renounce rights","melepaskan hak","abnormal","not normal","tidak normal","abolish","to officially end","menghapuskan","abominable","very bad or unpleasant","mengerikan","abominate","to loathe intensely","sangat membenci","abomination","something hateful","kekejian","aboriginal","original inhabitants","asli, penduduk asli","aborigines","native people","penduduk asli","abound","to exist in large numbers","berlimpah","aboveboard","honest, open","jujur, terbuka","abrade","to scrape off","mengikis","abrasion","scraped area","lecet, gesekan","abreast","side by side","berdampingan","abridge","to shorten text","meringkas","abridgment","shortened version","ringkasan","abrogate","to repeal or cancel","membatalkan","abrupt","sudden, unexpected","tiba-tiba","abscess","swollen infected area","abses, bisul","abscission","cutting off","pemotongan","abscond","to leave secretly","melarikan diri","absence","being away","ketidakhadiran","absent-minded","forgetful","pelupa","absolute","total, complete","mutlak","absolutely","completely","sama sekali","absolution","forgiveness of sins","pengampunan dosa","absolve","to free from blame","membebaskan","absorb","to take in","menyerap","absorption","process of absorbing","penyerapan","abstain","to refrain from","menghindari","abstemious","moderate in eating/drinking","hemat, sederhana","abstinence","refraining from something","pantangan","abstract","theoretical, not concrete","abstrak","abstruse","difficult to understand","sulit dipahami","absurd","ridiculous","tidak masuk akal","abundance","large quantity","kelimpahan","abuse","misuse or cruel treatment","penyalahgunaan","abusive","insulting, harmful","kasar, menghina","abut","to border on","berbatasan","abyss","deep hole","jurang","academic","scholarly","akademis","academician","academy member","akademisi","academy","school or institution","akademi","accede","to agree to","menyetujui","accelerate","to speed up","mempercepat","accept","to receive willingly","menerima","acceptable","satisfactory","dapat diterima","access","entry, permission","akses","access to","ability to enter","akses ke","accessible","easy to enter","mudah diakses","accession","attainment of rank","pengangkatan","accessory","extra item; accomplice","aksesori","accidental","unplanned","tidak sengaja","accidentally","by chance","secara tidak sengaja","acclaim","public praise","pujian","accommodate","to provide space","menampung","accompaniment","something that accompanies","iringan","accompanist","musician who accompanies","pengiring","accompany","to go with","menemani","accomplice","partner in crime","kaki tangan","accomplish","to achieve","mencapai","accomplished","skilled","mahir","accord","agreement","kesepakatan","according to","as stated by","menurut","accordingly","therefore","oleh karena itu","accordion","musical instrument","akordeon","accost","to approach boldly","menegur","account","report; bank account","rekening, laporan","accountable","responsible","bertanggung jawab","accounting","recording finances","akuntansi","accouter","to equip","memperlengkapi","accredit","to certify","mengakreditasi"];
     pushEntries(day1Raw);
     
@@ -367,8 +388,7 @@
         return fullVocab.slice(200, 300);
     }
 
-    // Pre-built questions based on the original file format (Part A and Part B from the actual practice)
-    // These are extracted directly from your DAY 1, DAY 2, DAY 3 practice sections
+    // Pre-built questions based on the original file format (Part A, Part B, Part C from Week 1)
     const practiceQuestions = {
         day1: {
             partA: [
@@ -523,6 +543,7 @@
     let submitted = false;
     let tabViolations = 0;
     let selectedAnswers = {};
+    let currentQuestionsStore = { partA: [], partB: [], partC: [] };
 
     const loginDiv = document.getElementById('loginPage');
     const listDiv = document.getElementById('vocabListPage');
@@ -545,7 +566,6 @@
                 alert("⚠️ Screenshot/print actions are disabled during the drill.");
             }
         });
-        // Disable split screen detection via resize (warning only)
         let resizeCount = 0;
         window.addEventListener('resize', () => {
             if (drillActive && !submitted && window.innerWidth < 800) {
@@ -590,7 +610,8 @@
         const vocab = getVocabByDay(currentDay);
         const container = document.getElementById('vocabListContainer');
         container.innerHTML = '';
-        document.getElementById('listDayLabel').innerText = currentDay.toUpperCase();
+        let dayLabel = currentDay.toUpperCase();
+        document.getElementById('listDayLabel').innerText = dayLabel;
         vocab.forEach(v => {
             const div = document.createElement('div'); div.className = 'vocab-item';
             div.innerHTML = `<div class="vocab-word">${v.word}</div><div>📖 ${v.eng} &nbsp;—&nbsp; 🇮🇩 ${v.ind}</div>`;
@@ -641,20 +662,24 @@
         const dayData = practiceQuestions[currentDay];
         if (!dayData) return;
         
-        // Shuffle Part A (1-25) and Part B (26-40)
         const shuffledPartA = shuffleArray([...dayData.partA]);
         const shuffledPartB = shuffleArray([...dayData.partB]);
         const wordBankList = shuffleArray([...dayData.wordBank]);
+        
+        // Store for summary
+        currentQuestionsStore = {
+            partA: shuffledPartA.map(q => q.text),
+            partB: shuffledPartB.map(q => q.text),
+            partC: []
+        };
         
         const container = document.getElementById('drillQuestionsContainer');
         container.innerHTML = '';
         selectedAnswers = {};
         
-        // Section title
         const titleA = document.createElement('h3'); titleA.className = 'section-title'; titleA.innerText = 'Part A: Fill in the blanks (Questions 1-25)';
         container.appendChild(titleA);
         
-        // Part A: Questions 1-25
         shuffledPartA.forEach((q, idx) => {
             const qDiv = document.createElement('div'); qDiv.className = 'question-card';
             qDiv.innerHTML = `
@@ -669,11 +694,9 @@
             }));
         });
         
-        // Section title Part B
         const titleB = document.createElement('h3'); titleB.className = 'section-title'; titleB.innerText = 'Part B: Choose the correct definition (Questions 26-40)';
         container.appendChild(titleB);
         
-        // Part B: Questions 26-40
         shuffledPartB.forEach((q, idx) => {
             const qDiv = document.createElement('div'); qDiv.className = 'question-card';
             qDiv.innerHTML = `
@@ -688,31 +711,55 @@
             }));
         });
         
-        // Word Bank display for Part C
         const bankDiv = document.createElement('div'); bankDiv.className = 'wordbank-box';
         bankDiv.innerHTML = `<strong>📦 WORD BANK (For questions 41-50):</strong><br/>` + wordBankList.map(w => `<span class="wordbank-word">${w}</span>`).join('');
         container.appendChild(bankDiv);
         
-        // Section title Part C
         const titleC = document.createElement('h3'); titleC.className = 'section-title'; titleC.innerText = 'Part C: Fill in the blanks using the Word Bank (Questions 41-50)';
         container.appendChild(titleC);
         
-        // Part C sentences (universal but students must pick from word bank)
-        const partCSentences = [
-            "Good study habits can help students overcome _________.",
-            "The company wants to _________ more customers online.",
-            "The school principal works as the chief _________.",
-            "We need _________ information before making a decision.",
-            "Her graduation was a major _________.",
-            "The team must _________ quickly to the new regulations.",
-            "The scholarship gave her an _________ over other applicants.",
-            "The climbers went on an exciting _________ in the mountains.",
-            "The university announced that _________ applications are now open.",
-            "Repeated practice improves the _________ of your work."
-        ];
+        const partCSentences = {
+            day1: [
+                "The editor decided to ______ the article before publication.",
+                "Students must ______ by the school rules.",
+                "The professor is a respected ______ in the field.",
+                "There was an ______ of fresh fruit after the harvest.",
+                "All passengers must be ______ before departure.",
+                "The injury was caused by an unexpected ______.",
+                "The website is easily ______ to users with disabilities.",
+                "The statement is ______ and leaves no room for doubt.",
+                "Our goal is to ______ the project before June.",
+                "The university hopes to ______ its new program next year."
+            ],
+            day2: [
+                "Good study habits can help students overcome ______.",
+                "The company wants to ______ more customers online.",
+                "The school principal works as the chief ______.",
+                "We need ______ information before making a decision.",
+                "Her graduation was a major ______.",
+                "The team must ______ quickly to the new regulations.",
+                "The scholarship gave her an ______ over other applicants.",
+                "The climbers went on an exciting ______ in the mountains.",
+                "The university announced that ______ applications are now open.",
+                "Repeated practice improves the ______ of your work."
+            ],
+            day3: [
+                "The charity sent emergency ______ to flood victims.",
+                "We cannot ______ such an expensive car right now.",
+                "The manager asked everyone to follow the meeting ______.",
+                "The athlete remained ______ despite the difficult obstacle course.",
+                "The doctor prescribed medicine to ______ the symptoms.",
+                "The new law may ______ how businesses operate.",
+                "The company signed an ______ with a foreign partner.",
+                "Teachers often ______ for better educational opportunities.",
+                "Both parties reached an ______ after several hours of negotiation.",
+                "The article included an ______ to a famous historical event."
+            ]
+        };
         
-        // Shuffle the sentences order
-        const shuffledSentences = shuffleArray([...partCSentences]);
+        const sentences = partCSentences[currentDay] || partCSentences.day1;
+        const shuffledSentences = shuffleArray([...sentences]);
+        currentQuestionsStore.partC = shuffledSentences;
         
         shuffledSentences.forEach((sentence, idx) => {
             const fbDiv = document.createElement('div'); fbDiv.className = 'question-card';
@@ -750,26 +797,29 @@
             <h3>📋 ANSWER SUMMARY — ${student.name} (${student.id})</h3>
             <p><strong>Program:</strong> ${student.program} | <strong>Day:</strong> ${currentDay.toUpperCase()} | <strong>Submitted:</strong> ${new Date().toLocaleString()}</p>
             <hr>
-            <h4>Part A (Questions 1-25)</h4>`;
+            <h4>Part A: Fill in the blanks (Questions 1-25)</h4>`;
         
         for (let i = 0; i < 25; i++) {
             let ans = selectedAnswers[`partA_${i}`] || "(not answered)";
-            summaryHtml += `<div><strong>Q${i + 1}:</strong> ${ans}</div>`;
+            let questionText = currentQuestionsStore.partA[i] || `Question ${i+1}`;
+            summaryHtml += `<div class="summary-question"><strong>Q${i+1}:</strong> ${questionText}<br><div class="summary-answer">📝 Your answer: ${ans}</div></div>`;
         }
         
-        summaryHtml += `<hr><h4>Part B (Questions 26-40)</h4>`;
+        summaryHtml += `<hr><h4>Part B: Choose the correct definition (Questions 26-40)</h4>`;
         for (let i = 0; i < 15; i++) {
             let ans = selectedAnswers[`partB_${i}`] || "(not answered)";
-            summaryHtml += `<div><strong>Q${26 + i}:</strong> ${ans}</div>`;
+            let questionText = currentQuestionsStore.partB[i] || `Definition ${i+1}`;
+            summaryHtml += `<div class="summary-question"><strong>Q${26 + i}:</strong> ${questionText}<br><div class="summary-answer">📝 Your answer: ${ans}</div></div>`;
         }
         
-        summaryHtml += `<hr><h4>Part C (Questions 41-50) — Fill in the blank</h4>`;
+        summaryHtml += `<hr><h4>Part C: Fill in the blank using Word Bank (Questions 41-50)</h4>`;
         for (let i = 0; i < 10; i++) {
             let ans = selectedAnswers[`partC_${i}`] || "(empty)";
-            summaryHtml += `<div><strong>Q${41 + i}:</strong> ${ans}</div>`;
+            let questionText = currentQuestionsStore.partC[i] || `Fill in the blank ${i+1}`;
+            summaryHtml += `<div class="summary-question"><strong>Q${41 + i}:</strong> ${questionText}<br><div class="summary-answer">📝 Your answer: ${ans}</div></div>`;
         }
         
-        summaryHtml += `<hr><footer style="margin-top:20px;">VOCAB DRILL — Official Assessment Report | Generated from secure testing platform</footer></div>`;
+        summaryHtml += `<hr><footer style="margin-top:20px;">VOCAB DRILL — Week 1 Official Assessment Report | Generated from secure testing platform</footer></div>`;
         document.getElementById('summaryContent').innerHTML = summaryHtml;
         summaryPopup.classList.remove('hidden');
     }
@@ -788,7 +838,9 @@
                 body { font-family: 'Courier New', monospace, sans-serif; padding: 2rem; background: white; }
                 .print-pattern { background: repeating-linear-gradient(45deg, #f4f6fc 0px, #f4f6fc 3px, #fff 3px, #fff 15px); padding: 20px; border-radius: 12px; }
                 h3, h4 { color: #1e293b; }
-                div { margin: 4px 0; }
+                .summary-question { margin-bottom: 12px; padding-bottom: 8px; border-bottom: 1px solid #e2e8f0; }
+                .summary-answer { margin-left: 20px; color: #475569; }
+                strong { color: #0f172a; }
             </style>
             </head><body>${printContents}</body></html>
         `);
